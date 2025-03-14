@@ -20,14 +20,13 @@ class Processo(models.Model):
     instancia = models.CharField(max_length=50)
     data_propositura = models.DateField()
     advogado = models.ForeignKey(Advogado, on_delete=models.CASCADE)
-    processo_tramite = models.BooleanField(default=False)
-    processo_suspenso = models.BooleanField(default=False)
-    processo_extinto = models.BooleanField(default=False)
+    status = models.CharField(max_length=50)
     nome_autor = models.CharField(max_length=50, unique=True)
     cpf_autor = models.CharField(max_length=14)
     data_ultima_modificacao = models.DateField()
     juiz = models.CharField(max_length=50)
     numero_processo = models.CharField(max_length=50, unique=True)
+    descricao = models.TextField()
 
     def __str__(self):
         return f"{self.numero_processo} - {self.tipo_processo}"
