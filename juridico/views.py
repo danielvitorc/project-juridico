@@ -6,7 +6,7 @@ from django.contrib import messages
 import pandas as pd
 from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
-from .forms import ProcessoForm, AdvogadoForm
+from .forms import ProcessoForm, AdvogadoForm, ProcessoFilterForm
 from .models import Advogado, Processo
 
 # ===== Tela de Login ===== 
@@ -28,8 +28,28 @@ def login_usuario(request):
 def home(request):
     processo_form = ProcessoForm()
     advogado_form = AdvogadoForm()
-    advogados = Advogado.objects.all()  # Busca todos os advogados
-    processos = Processo.objects.all()  # Busca todos os processos
+    processos = Processo.objects.all()  
+
+    filter_form = ProcessoFilterForm(request.GET) # Inicializa o formulário de filtro com os dados GET
+
+    if filter_form.is_valid():
+        numero_processo = filter_form.cleaned_data.get('numero_processo')
+        status = filter_form.cleaned_data.get('status')
+        instancia = filter_form.cleaned_data.get('instancia')
+        nome_autor = filter_form.cleaned_data.get('nome_autor')
+        advogado = filter_form.cleaned_data.get('advogado')
+
+        if numero_processo:
+            processos = processos.filter(numero_processo__icontains=numero_processo)
+        if status:
+            processos = processos.filter(status=status)
+        if instancia:
+            processos = processos.filter(instancia=instancia)
+        if nome_autor:
+            processos = processos.filter(nome_autor=nome_autor)
+        if advogado:
+            processos = processos.filter(advogado=advogado)
+        # Adicione mais filtros conforme os campos no seu formulário de filtro
 
     if request.method == 'POST':
         if 'processo_submit' in request.POST:  # Identifica o formulário de Processo
@@ -72,12 +92,20 @@ def home(request):
                 return redirect('home')
             except Exception as e:
                 print(f"Erro ao importar planilha: {e}")
+    
+    advogados = Advogado.objects.all()  # Busca todos os advogados
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return render(request, 'juridico/partials/processo_tabela.html', {
+            'processos': processos
+        })
 
     return render(request, 'juridico/home.html', {
         'processo_form': processo_form,
         'advogado_form': advogado_form,
         'advogados': advogados,
-        'processos': processos
+        'processos': processos,
+        'filter_form': filter_form, 
     })
 
 def exportar_processos_excel(request):

@@ -1,0 +1,26 @@
+<h2>Lista de Processos</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Número</th>
+            <th>Tipo</th>
+            <th>Advogado Responsável</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for processo in processos %}
+            <tr>
+                <td>{{ processo.numero_processo }}</td>
+                <td>{{ processo.tipo_processo }}</td>
+                <td>{{ processo.advogado.nome_completo }}</td>
+                <td>{{ processo.status }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="4">Nenhum processo cadastrado.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>

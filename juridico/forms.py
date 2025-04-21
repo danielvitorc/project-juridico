@@ -77,3 +77,53 @@ class ProcessoForm(forms.ModelForm):
             'data_propositura', 'advogado', 'status', 'nome_autor', 'cpf_autor', 'data_ultima_modificacao', 'juiz', 
             'numero_processo', 'descricao'
         ]
+        widgets = {
+             'data_propositura': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+             'data_ultima_modificacao': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        }
+    def clean(self):
+        cleaned_data = super().clean()
+
+        # Transforma todos os campos de texto em maiúsculo, se não forem None
+        for field, value in cleaned_data.items():
+            if isinstance(value, str):
+                cleaned_data[field] = value.upper()
+
+        return cleaned_data
+
+class ProcessoFilterForm(forms.Form):
+    numero_processo = forms.CharField(required=False, label='Nº do Processo', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    
+    status = forms.ChoiceField(
+        required=False,
+        label='Status',
+        choices=[('', 'Todos')] + [
+            ('PROCESSO EM TRÂMITE', 'PROCESSO EM TRÂMITE'), 
+            ('PROCESSO SUSPENSO', 'PROCESSO SUSPENSO'),
+            ('PROCESSO EXTINTO', 'PROCESSO EXTINTO')
+        ],
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    
+    instancia = forms.ChoiceField(
+        required=False,
+        label='Instância',
+        choices=[('', 'Todas')] + [
+            ('1ª INSTÂNCIA', '1ª INSTÂNCIA'), ('2ª INSTÂNCIA', '2ª INSTÂNCIA')
+        ],
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    
+    nome_autor = forms.CharField(required=False, label='RECLAMANTE', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    
+    advogado = forms.ModelChoiceField(
+        queryset=Advogado.objects.all(),
+        required=False,
+        empty_label="Todos",
+        label='Advogado',
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        pass

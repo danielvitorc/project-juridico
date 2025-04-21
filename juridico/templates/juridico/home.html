@@ -1,4 +1,5 @@
 {% load static %}
+{% load widget_tweaks %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,34 +19,47 @@
     {% include 'juridico/includes/modal_upload_excel.html' %}
 
     <div class="content">
-        <a href="{% url 'exportar_processos_excel' %}" class="btn btn-success">Excel</a>
-        <h2>Lista de Processos</h2>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Número</th>
-                    <th>Tipo</th>
-                    <th>Advogado Responsável</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for processo in processos %}
-                    <tr>
-                        <td>{{ processo.numero_processo }}</td>
-                        <td>{{ processo.tipo_processo }}</td>
-                        <td>{{ processo.advogado.nome }}</td>
-                        <td>{{ processo.status }}</td>
-                    </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="4">Nenhum processo cadastrado.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+        <a href="{% url 'exportar_processos_excel' %}" class="btn btn-success">Excel</a> 
 
+        <!-- Filtros -->
+        <form id="filter-form" data-url="{% url 'home' %}" method="get" class="mb-4 p-3 bg-white rounded shadow-sm">
+            <div class="row g-3">
+
+                <!-- Coluna 1 -->
+                <div class="col-md-3">
+                    <label class="form-label">{{ filter_form.numero_processo.label }}</label>
+                    {{ filter_form.numero_processo|add_class:"form-control" }}
+
+                    <label class="form-label mt-3">{{ filter_form.status.label }}</label>
+                    {{ filter_form.status|add_class:"form-select" }}
+
+                    <label class="form-label mt-3">{{ filter_form.instancia.label }}</label>
+                    {{ filter_form.instancia|add_class:"form-select" }}
+
+                    
+                </div>
+
+                <!-- Coluna 2 -->
+                <div class="col-md-3">
+                    <label class="form-label">{{ filter_form.advogado.label }}</label>
+                    {{ filter_form.advogado|add_class:"form-select" }}
+
+                    <label class="form-label mt-3">{{ filter_form.nome_autor.label }}</label>
+                    {{ filter_form.nome_autor|add_class:"form-select" }}
+
+                    <!-- Botão Limpar Filtros -->
+                    <div class="mt-4">
+                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times me-2"></i> Limpar Filtros
+                        </a>
+                    </div>
+                </div>
+                                <!-- Tabela -->
+                <div id="processo-tabela">
+                    {% include 'juridico/partials/processo_tabela.html' %}
+                </div>
+    </div>
+    <script src="{% static 'juridico/js/filters.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </html>
 </body>
