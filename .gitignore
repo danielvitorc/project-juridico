@@ -8,3 +8,6 @@ __pycache__/
 
 # Ignore arquivos do sistema
 .DS_Store
+
+# Ignore o Banco de Dados
+*.sqlite3

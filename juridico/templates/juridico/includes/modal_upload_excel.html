@@ -1,0 +1,21 @@
+<!-- Modal para importar planilhas -->
+<div class="modal fade" id="uploadExcelModal" tabindex="-1" aria-labelledby="uploadExcelModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="uploadExcelModalLabel">Importar Processos via Planilha Excel</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="upload_excel" class="form-label">Selecione o arquivo Excel:</label>
+            <input type="file" name="upload_excel" id="upload_excel" accept=".xlsx" class="form-control mb-3" required>
+            <button type="submit" class="btn btn-success" name="upload_excel_submit">Importar</button>
+            <a href="{% url 'download_planilha_modelo' %}" class="btn btn-success">Baixar Planilha Modelo</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

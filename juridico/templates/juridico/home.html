@@ -11,118 +11,12 @@
 
 </head>
 <body>
-        <!-- Sidebar -->
-    <div class="sidebar">
-        <h4 class="text-center">Norte Tech</h4>
-        <a href="{% url 'home' %}"> <i class="fa fa-home me-2"></i> HOME</a>
-        <a href="#"><i class="fas fa-users me-2"></i>REUNIÕES</a>
-        <a href="#"><i class="fas fa-list me-2"></i> REGISTROS</a>
-        <a href="#"><i class="fas fa-chart-line me-2"></i> ANÁLITICO</a>
-        <a href="{% url 'logout' %}" > <i class="fas fa-sign-out-alt me-2"></i>LOGOUT</a>
-            <!-- Botões para abrir os modais -->
-            <button type="button" class="btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target="#formModal">
-                <i class="fas fa-plus me-2"></i>PROCESSO
-            </button>
-            <button type="button" class="btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target="#advogadoModal">
-                <i class="fas fa-user-plus me-2"></i> ADVOGADO
-            </button>
-            <!-- Botão para abrir o modal de importação -->
-            <button type="button" class="btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target="#uploadExcelModal">
-                <i class="fas fa-file-upload me-2"></i> UPLOAD PROCESSOS
-            </button>
 
-        </div>
-    <!-- Modal para Processo -->
-    <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
-        <div class="modal-dialog ">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="formModalLabel">Cadastrar Processo</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST">
-                        {% csrf_token %}
-                        {{ processo_form.as_p }}
-                        <button type="submit" name="processo_submit" class="btn btn-primary">Salvar</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% include 'juridico/includes/sidebar.html' with exibir_botoes_modais=True %}
+    {% include 'juridico/includes/modal_processo.html' %}
+    {% include 'juridico/includes/modal_advogado.html' %}
+    {% include 'juridico/includes/modal_upload_excel.html' %}
 
-    <!-- Modal para Advogado -->
-    <div class="modal fade" id="advogadoModal" tabindex="-1" aria-labelledby="advogadoModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-g">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="advogadoModalLabel">Cadastrar Advogado</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                
-                <div class="modal-body">
-                    <!-- Formulário de cadastro -->
-                    <form method="POST">
-                        {% csrf_token %}
-                        {{ advogado_form.as_p }}
-                        <button type="submit" name="advogado_submit" class="btn btn-primary mb-3">Salvar</button>
-                    </form>
-
-                    <!-- Tabela de advogados -->
-                    <h5 class="mt-3">Lista de Advogados</h5>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>OAB</th>
-                                <th>Nome</th> 
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for advogado in advogados %}
-                                <tr>
-                                    <td>{{ advogado.oab }}</td>                                    
-                                    <td>{{ advogado.nome_completo }}</td>
-                                    <td>
-                                        <form method="POST" action="{% url 'deletar_advogado' advogado.id %}" style="display: inline;">
-                                            {% csrf_token %}
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                <i class="fas fa-trash-alt"></i> Deletar
-                                            </button>
-                                        </form>
-                                    </td>
-
-                                </tr>
-                            {% empty %}
-                                <tr>
-                                    <td colspan="4">Nenhum advogado cadastrado.</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal para importar planilhas -->
-    <div class="modal fade" id="uploadExcelModal" tabindex="-1" aria-labelledby="uploadExcelModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="uploadExcelModalLabel">Importar Processos via Planilha Excel</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <label for="upload_excel" class="form-label">Selecione o arquivo Excel:</label>
-                        <input type="file" name="upload_excel" id="upload_excel" accept=".xlsx" class="form-control mb-3" required>
-                        <button type="submit" class="btn btn-success" name="upload_excel_submit">Importar</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="content">
         <a href="{% url 'exportar_processos_excel' %}" class="btn btn-success">Excel</a>
         <h2>Lista de Processos</h2>

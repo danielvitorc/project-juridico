@@ -1,0 +1,50 @@
+<!-- Modal para Advogado -->
+<div class="modal fade" id="advogadoModal" tabindex="-1" aria-labelledby="advogadoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-g">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="advogadoModalLabel">Cadastrar Advogado</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form method="POST">
+            {% csrf_token %}
+            {{ advogado_form.as_p }}
+            <button type="submit" name="advogado_submit" class="btn btn-primary mb-3">Salvar</button>
+          </form>
+  
+          <h5 class="mt-3">Lista de Advogados</h5>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>OAB</th>
+                <th>Nome</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for advogado in advogados %}
+                <tr>
+                  <td>{{ advogado.oab }}</td>
+                  <td>{{ advogado.nome_completo }}</td>
+                  <td>
+                    <form method="POST" action="{% url 'deletar_advogado' advogado.id %}" style="display: inline;">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash-alt"></i> Deletar
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="3">Nenhum advogado cadastrado.</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  

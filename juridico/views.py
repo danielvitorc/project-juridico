@@ -97,11 +97,38 @@ def exportar_processos_excel(request):
     
     return response
 
+def download_planilha_modelo(request):
+    # Define as colunas exigidas
+    colunas_modelo = [
+        "unidade", "tipo_processo", "acao", "contrato_envolvido", "cidade", "valor_causa", "vara", 
+        "fase", "instancia", "data_propositura", "advogado", "status", 
+        "nome_autor", "cpf_autor", "data_ultima_modificacao", "juiz", "numero_processo", 
+        "descricao"
+    ]
+    
+    # Cria um DataFrame vazio com essas colunas
+    df = pd.DataFrame(columns=colunas_modelo)
+    
+    # Configura a resposta HTTP para download
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="Modelo_Processos.xlsx"'
+    
+    # Salva o DataFrame no arquivo Excel
+    with pd.ExcelWriter(response, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False)
+    
+    return response
+
 @login_required
 def deletar_advogado(request, id):
     advogado = get_object_or_404(Advogado, id=id)
     advogado.delete()
     return redirect('home')
+
+@login_required
+def registros(request):
+    return render(request,'juridico/registros.html')
+
 
 # ==== Função para deslogar do sistema =====
 def logout_usuario(request):
