@@ -1,0 +1,165 @@
+    <!-- Modal de Edição -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar Processo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm" data-url="{% url 'editar_processo' %}">
+                        {% csrf_token %}
+                        <input type="hidden" id="edit-id" name="id">
+
+                        <div class="mb-3">
+                            <label for="edit-unidade" class="form-label">Unidade</label>
+                            <select class="form-control" id="edit-unidade" name="unidade">
+                                <option value="" selected disabled>Selecione a nova unidade</option>
+                                <option value="AMAZONAS">AMAZONAS</option>
+                                <option value="RORAIMA">RORAIMA</option>
+                                <option value="MINAS GERAIS">MINAS GERAIS</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-tipo_processo" class="form-label">Tipo de Processo</label>
+                            <select class="form-control" id="edit-tipo_processo" name="tipo_processo">
+                                <option value="" selected disabled>Selecione o tipo de Processo</option>
+                                <option value="CÍVEL">CÍVEL</option>
+                                <option value="CRIMINAL">CRIMINAL</option>
+                                <option value="PREVIDENCIARIO">PREVIDENCIARIO</option>
+                                <option value="TRABALHISTA">TRABALHISTA</option>
+                                <option value="VARA DE FAMILIA">VARA DE FAMILIA</option>
+                            </select>                                
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-acao" class="form-label">Ação</label>
+                            <input type="text" class="form-control" id="edit-acao" name="acao">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-contrato_envolvido" class="form-label">Contrato Envolvido</label>
+                            <input type="text" class="form-control" id="edit-contrato_envolvido" name="contrato_envolvido">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-cidade" class="form-label">Cidade</label>
+                            <input type="text" class="form-control" id="edit-cidade" name="cidade">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-valor_causa" class="form-label">Valor da Causa</label>
+                            <input type="number" class="form-control" id="edit-valor_causa" name="valor_causa" step="0.01">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-vara" class="form-label">Vara</label>
+                            <select type="text" class="form-control" id="edit-vara" name="vara">
+                                <option value="" selected disabled>Selecione o tipo de vara</option>
+                                <option value="CÍVEL">CÍVEL</option>
+                                <option value="CONCILIAÇÃO">CONCILIAÇÃO</option>
+                                <option value="INSTRUÇÃO E JULGAMENTO">INSTRUÇÃO E JULGAMENTO</option>
+                                <option value="TRABALHISTA TRIBUTÁRIA">TRABALHISTA TRIBUTÁRIA</option>
+                                <option value="VARA DE FAMILIA">VARA DE FAMILIA</option>
+                            </select>
+                            
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-fase" class="form-label">Fase</label>
+                            <select class="form-control" id="edit-fase" name="fase">
+                                <option value="" selected disabled>Selecione a fase</option>
+                                <option value="CONSTESTAÇÃO">CONSTESTAÇÃO</option>
+                                <option value="CONCILIAÇÃO">CONCILIAÇÃO</option>
+                                <option value="INPUGNAÇÃO">INPUGNAÇÃO</option>
+                                <option value="INSTRUÇÃO">INSTRUÇÃO</option>
+                                <option value="RECURSO">RECURSO</option>
+                                <option value="SUSPENSO">SUSPENSO</option>
+                                <option value="EXECUÇÃO">EXECUÇÃO</option>
+                                <option value="ARQUIVADO">ARQUIVADO</option>
+                                <option value="ADMINISTRATIVO">ADMINISTRATIVO</option>
+                                <option value="SOLICITAÇÃO DE DOCUMENTOS">SOLICITAÇÃO DE DOCUMENTOS</option>
+                                
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-instancia" class="form-label">Instância</label>
+                            <select class="form-control" id="edit-instancia" name="instancia">
+                                <option value="" selected disabled>Selecione a Instância</option>
+                                <option value="1ª INSTÂNCIA">1ª INSTÂNCIA</option>
+                                <option value="2ª INSTÂNCIA">2ª INSTÂNCIA</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-data_propositura" class="form-label">Data de Propositura</label>
+                            <input type="date" class="form-control" id="edit-data_propositura" name="data_propositura">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-advogado" class="form-label">Advogado</label>
+                            <select class="form-control" id="edit-advogado" name="advogado">
+                                {% for advogado in advogados %}
+                                <option value="{{ advogado.id }}" 
+                                    {% if advogado.id == processo.advogado.id %}selected{% endif %}>
+                                    {{ advogado.nome_completo }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-status" class="form-label">Status</label>
+                            <select type="text" class="form-control" id="edit-status" name="status">
+                                <option value="" selected disabled>Selecione o Status Atual</option>
+                                <option value="PROCESSO EM TRÂMITE">PROCESSO EM TRÂMITE</option>
+                                <option value="PROCESSO SUSPENSO">PROCESSO SUSPENSO</option>
+                                <option value="PROCESSO EXTINTO">PROCESSO EXTINTO</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-nome_autor" class="form-label">Nome do Autor</label>
+                            <input type="text" class="form-control" id="edit-nome_autor" name="nome_autor">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-cpf_autor" class="form-label">CPF do Autor</label>
+                            <input type="text" class="form-control" id="edit-cpf_autor" name="cpf_autor">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-data_ultima_modificacao" class="form-label">Última Modificação</label>
+                            <input type="date" class="form-control" id="edit-data_ultima_modificacao" name="data_ultima_modificacao">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-juiz" class="form-label">Juiz</label>
+                            <select  class="form-control" id="edit-juiz" name="juiz">
+                                <option value="" selected disabled>Selecione o Juiz</option>
+                                <option value="SUBSTITUTO">SUBSTITUTO</option>
+                                <option value="TITULAR">TITULAR</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-numero_processo" class="form-label">Número do Processo</label>
+                            <input type="text" class="form-control" id="edit-numero_processo" name="numero_processo">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit-descricao" class="form-label">Descrição</label>
+                            <textarea class="form-control" id="edit-descricao" name="descricao" rows="3"></textarea>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>

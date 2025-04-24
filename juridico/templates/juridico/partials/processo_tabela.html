@@ -6,6 +6,7 @@
             <th>Tipo</th>
             <th>Advogado Responsável</th>
             <th>Status</th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -15,12 +16,66 @@
                 <td>{{ processo.tipo_processo }}</td>
                 <td>{{ processo.advogado.nome_completo }}</td>
                 <td>{{ processo.status }}</td>
+                <td>
+                    <button type="button" class="btn btn-info btn-sm view-details" data-bs-toggle="modal" data-bs-target="#detailsModal"
+                    data-unidade="{{ processo.unidade }}"
+                    data-tipo_processo="{{ processo.tipo_processo }}"
+                    data-acao="{{ processo.acao }}"
+                    data-contrato_envolvido="{{ processo.contrato_envolvido }}"
+                    data-cidade="{{ processo.cidade }}"
+                    data-valor_causa="{{ processo.valor_causa }}"
+                    data-vara="{{ processo.vara }}"
+                    data-fase="{{ processo.fase }}"
+                    data-instancia="{{ processo.instancia }}"
+                    data-data_propositura="{{ processo.data_propositura|date:'d/m/Y' }}"
+                    data-advogado="{{ processo.advogado.nome_completo|default:'-' }}"
+                    data-status="{{ processo.status }}"
+                    data-nome_autor="{{ processo.nome_autor }}"
+                    data-cpf_autor="{{ processo.cpf_autor }}"
+                    data-data_ultima_modificacao="{{ processo.data_ultima_modificacao|date:'d/m/Y' }}"
+                    data-juiz="{{ processo.juiz }}"
+                    data-numero_processo="{{ processo.numero_processo }}"
+                    data-descricao="{{ processo.descricao }}">
+                    <i class="fas fa-eye"></i> Visualizar
+                </button>
+                <a href="{% url 'excluir_processo' processo.id %}" 
+                class="btn btn-danger btn-sm"
+                onclick="return confirm('Tem certeza que deseja excluir este registro?');">
+                <i class="fas fa-trash-alt"></i> Excluir
+                </a>
+                <!-- Botão para editar o processo -->
+                    <button class="btn btn-warning btn-sm edit-details"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editModal"
+                        data-id="{{ processo.id }}"
+                        data-unidade="{{ processo.unidade }}"
+                        data-tipo_processo="{{ processo.tipo_processo }}"
+                        data-acao="{{ processo.acao }}"
+                        data-contrato_envolvido="{{ processo.contrato_envolvido }}"
+                        data-cidade="{{ processo.cidade }}"
+                        data-valor_causa="{{ processo.valor_causa }}"
+                        data-vara="{{ processo.vara }}"
+                        data-fase="{{ processo.fase }}"
+                        data-instancia="{{ processo.instancia }}"
+                        data-data_propositura="{{ processo.data_propositura|date:'Y-m-d' }}"
+                        data-advogado="{{ processo.advogado.id }}"
+                        data-status="{{ processo.status }}"
+                        data-nome_autor="{{ processo.nome_autor }}"
+                        data-cpf_autor="{{ processo.cpf_autor }}"
+                        data-data_ultima_modificacao="{{ processo.data_ultima_modificacao|date:'Y-m-d' }}"
+                        data-juiz="{{ processo.juiz }}"
+                        data-numero_processo="{{ processo.numero_processo }}"
+                        data-descricao="{{ processo.descricao }}"
+                    >
+                <i class="fas fa-edit"></i> Editar
+                </button>
+            </td>
             </tr>
         {% empty %}
             <tr>
-                <td colspan="4">Nenhum processo cadastrado.</td>
+                <td colspan="5" style="text-align: center;">Nenhum processo cadastrado.</td>
             </tr>
         {% endfor %}
+
     </tbody>
 </table>
-</div>

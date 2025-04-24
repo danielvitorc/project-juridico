@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 import pandas as pd
 from django.core.exceptions import ValidationError
@@ -107,6 +107,55 @@ def home(request):
         'processos': processos,
         'filter_form': filter_form, 
     })
+
+def editar_processo(request):
+    if request.method == "POST":
+        try:
+            processo_id = request.POST.get("id")
+            processo = get_object_or_404(Processo, id=processo_id)
+
+            # Campos básicos
+            processo.unidade = request.POST.get("unidade", processo.unidade)
+            processo.tipo_processo = request.POST.get("tipo_processo", processo.tipo_processo)
+            processo.acao = request.POST.get("acao", processo.acao)
+            processo.contrato_envolvido = request.POST.get("contrato_envolvido", processo.contrato_envolvido)
+            processo.cidade = request.POST.get("cidade", processo.cidade)
+            processo.valor_causa = float(request.POST.get("valor_causa", processo.valor_causa) or 0.0)
+            processo.vara = request.POST.get("vara", processo.vara)
+            processo.fase = request.POST.get("fase", processo.fase)
+            processo.instancia = request.POST.get("instancia", processo.instancia)
+            processo.data_propositura = request.POST.get("data_propositura", processo.data_propositura)
+            processo.status = request.POST.get("status", processo.status)
+            processo.nome_autor = request.POST.get("nome_autor", processo.nome_autor)
+            processo.cpf_autor = request.POST.get("cpf_autor", processo.cpf_autor)
+            processo.data_ultima_modificacao = request.POST.get("data_ultima_modificacao", processo.data_ultima_modificacao)
+            processo.juiz = request.POST.get("juiz", processo.juiz)
+            processo.numero_processo = request.POST.get("numero_processo", processo.numero_processo)
+            processo.descricao = request.POST.get("descricao", processo.descricao)
+
+            # Verifica se o advogado existe
+            advogado_id = request.POST.get("advogado")
+            if advogado_id:
+                advogado = get_object_or_404(Advogado, id=advogado_id)
+                processo.advogado = advogado
+
+            processo.save()
+
+            return JsonResponse({"success": True, "message": "Processo atualizado com sucesso."})
+
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)})
+
+    return JsonResponse({"success": False, "error": "Método inválido"})
+
+def excluir_processo(request, id):
+    processo = get_object_or_404(Processo, id=id)
+    try:
+        processo.delete()
+        messages.success(request, "Processo excluído com sucesso.")
+    except Exception as e:
+        messages.error(request, f"Ocorreu um erro ao tentar excluir: {e}")
+    return redirect('home')  # Redirecionando para a view unificada
 
 def exportar_processos_excel(request):
     # Consulta todos os registros do modelo Processos
