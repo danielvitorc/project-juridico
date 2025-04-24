@@ -1,10 +1,10 @@
 <div class="sidebar">
     <h4 class="text-center">Norte Tech</h4>
-    <a href="{% url 'home' %}"><i class="fa fa-home me-2"></i> HOME</a>
-    <a href="#"><i class="fas fa-users me-2"></i> REUNIÕES</a>
-    <a href="{% url 'registros' %}"><i class="fas fa-list me-2"></i> REGISTROS</a>
-    <a href="#"><i class="fas fa-chart-line me-2"></i> ANÁLITICO</a>
-    <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt me-2"></i> LOGOUT</a>
+    <a href="{% url 'home' %}" class="botao-active"><i class="fa fa-home me-2"></i> HOME</a>
+    <a href="#"class="botao-sidebar"><i class="fas fa-users me-2"></i> REUNIÕES</a>
+    <a href="{% url 'registros' %}"class="botao-sidebar"><i class="fas fa-list me-2"></i> REGISTROS</a>
+    <a href="#"class="botao-sidebar"><i class="fas fa-chart-line me-2"></i> ANÁLITICO</a>
+    <a href="{% url 'logout' %}" class="botao-sidebar"><i class="fas fa-sign-out-alt me-2"></i> LOGOUT</a>
 
     {% if exibir_botoes_modais %}
         <button type="button" class="btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target="#formModal">

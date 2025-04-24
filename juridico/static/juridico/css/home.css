@@ -1,0 +1,212 @@
+
+
+.content {
+    margin-left: 17vw;
+    padding: 20px;
+}
+
+.sidebar {
+    background: #0E2C53;
+      width: 25vw;
+      height: 95vh;
+      position: fixed;
+      border-radius: 40px;
+      margin-top: 18px;
+      left: 24px;
+      top: 0;
+      padding-top: 20px;
+      overflow-y: auto; /* Adiciona o scroll vertical */
+      transform: translateX(-100%);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.5s ease;
+      animation: floating 12s ease-in-out infinite;
+      box-shadow:
+      2px 20px 60px #bebebe,
+      -20px -20px 60px #bebebe;
+}
+  
+  /* Estiliza o scrollbar para navegadores baseados em Webkit (Chrome, Edge, etc.) */
+.sidebar::-webkit-scrollbar {
+      width: 8px; /* Largura do scroll */
+}
+  
+.sidebar::-webkit-scrollbar-thumb {
+      background-color: #888; /* Cor da "bolinha" do scroll */
+      border-radius: 4px; /* Borda arredondada */
+}
+  
+.sidebar::-webkit-scrollbar-track {
+      background-color: #f1f1f1; /* Cor do fundo da barra */
+}
+.sidebar a {
+      display: flex;
+      transition: transform 0.3s ease;
+      font-size: 14px;
+      text-decoration: none;
+      justify-content: flex-start;
+}
+.sidebar button {
+      font-size: 14px;
+      width: 74%;
+      margin-left: 26px;
+      display: block;
+  }
+  .btn-primary {
+    --bs-btn-border-color: #0d6dfd00;
+  }
+  
+  .sidebar i{
+      font-size: 15px;
+      padding: 5px;
+  }
+  .sidebar.show {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  
+  .sidebar .DatePickerSingle {
+      width: 95%; /* Deixa o DatePicker menor para caber melhor */
+      margin: 0 auto; /* Centraliza o componente */
+  }
+    
+  .sidebar .DatePickerSingle .dropdown-menu {
+      width: 95% !important; /* Ajusta o dropdown para caber dentro da sidebar */
+      overflow-y: scroll; /* Adiciona rolagem dentro do dropdown, se necessário */
+  }
+  
+  .sidebar .botao-sidebar {
+      color: #ffffff !important;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      display: flex;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+    
+    /* Efeito ao passar o mouse nos botões */
+  .sidebar .botao-sidebar:hover {
+      background-color: #1a1a1a !important; 
+      color: white !important; /* Força a cor branca */
+      transform: scale(1.0);
+  }
+  
+  
+  .sidebar .botao-sidebar i {
+      color: #ffffff;
+      margin-right: 10px;
+  }
+  @media (min-width: 1200px) {
+      .sidebar {
+        width: 15vw; /* Ajuste proporcional para telas grandes */
+      }
+    
+      .sidebar .botao-sidebar {
+        font-size: 14px;
+        padding: 12px 25px;
+      }
+    
+      .sidebar .botao-sidebar i {
+        margin-right: 12px;
+      }
+    
+      .Botao-adicionar {
+        padding: 12px 25px;
+      }
+  }
+    
+    /* Para telas de 992px a 1199px (desktops e laptops médios) */
+  @media (min-width: 992px) and (max-width: 1199px) {
+      .sidebar {
+        width: 20vw; /* Ajuste proporcional para telas médias */
+      }
+    
+      .sidebar .botao-sidebar {
+        font-size: 14px;
+        padding: 10px 20px;
+      }
+    
+      .sidebar .botao-sidebar i {
+        margin-right: 10px;
+      }
+    
+      .Botao-adicionar {
+        padding: 10px 20px;
+      }
+  }
+    
+    /* Para telas de 768px a 991px (tablets e dispositivos móveis médios) */
+  @media (min-width: 768px) and (max-width: 991px) {
+      .sidebar {
+        width: 25vw; /* Ajuste proporcional para tablets e dispositivos menores */
+      }
+    
+      .sidebar .botao-sidebar {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+    
+      .sidebar .botao-sidebar i {
+        margin-right: 8px;
+      }
+    
+      .Botao-adicionar {
+        padding: 8px 16px;
+      }
+  }
+    
+    /* Para telas menores que 768px (celulares e dispositivos móveis pequenos) */
+  @media (max-width: 767px) {
+      .sidebar {
+        width: 30vw; /* Ajuste proporcional para telas pequenas */
+      }
+    
+      .sidebar img {
+        width: 20px;
+      }
+    
+      .sidebar .botao-sidebar {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+    
+      .sidebar .botao-sidebar i {
+        margin-right: 8px;
+      }
+    
+      .Botao-adicionar {
+        padding: 8px 16px;
+      }
+  }
+  
+  
+  .botao-active {
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background: #1a1a1a;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    color: #ffc107 !important;
+    font-weight: bold;
+  }
+  
+  .botao-active i {
+    color: #ffffff;
+    font-weight: bold;
+  }
+  
+  /* Estilo para o botão "Adicionar" */
+  .Botao-adicionar {
+    background: linear-gradient(135deg, #00BCD4 0%, #492980 100%) !important;
+    color: #ffffff !important;
+  }
+  
+  .Botao-adicionar i {
+    color: #ffc107 !important;
+  }
+  
+  /* -------SIDEBAR------- */
