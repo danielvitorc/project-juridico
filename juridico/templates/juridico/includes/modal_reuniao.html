@@ -1,0 +1,18 @@
+    <!-- Modal do Formulário -->
+    <div class="modal fade" id="formModalReuniao" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Agendar Reunião</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form_reuniao.as_p }}  <!-- Renderiza o formulário com os estilos aplicados no forms.py -->
+                        <button type="submit" class="btn btn-primary mt-3">Salvar Reunião</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>

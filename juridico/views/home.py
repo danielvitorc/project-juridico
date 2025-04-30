@@ -1,26 +1,17 @@
-from django.contrib.auth.models import User
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse, JsonResponse
-from django.contrib import messages
-import pandas as pd
-from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
-from .forms import ProcessoForm, AdvogadoForm, ProcessoFilterForm
-from .models import Advogado, Processo
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, JsonResponse
+from django.conf import settings
+from django.contrib import messages
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+from reportlab.lib.utils import ImageReader
 
-# ===== Tela de Login ===== 
-def login_usuario(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('home')  # Redirecionar para a página inicial pós-login
-        else:
-            messages.error(request, 'Usuário ou senha inválidos.')
-    return render(request, 'juridico/login.html')
+import pandas as pd
+from io import BytesIO
+import os
+from ..forms import ProcessoForm, AdvogadoForm, ProcessoFilterForm
+from ..models import Advogado, Processo
 
 
 # ===== Renderizar a tela Home se o login for bem sucedido =====
@@ -105,8 +96,84 @@ def home(request):
         'advogado_form': advogado_form,
         'advogados': advogados,
         'processos': processos,
-        'filter_form': filter_form, 
+        'filter_form': filter_form,
     })
+
+def exportar_processos_pdf(request, numero_processo):
+    try:
+        processo = Processo.objects.get(numero_processo=numero_processo)
+    except Processo.DoesNotExist:
+        return HttpResponse("Processo não encontrado", status=404)
+
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer, pagesize=A4)
+    largura, altura = A4
+
+    # Caminho da imagem do cabeçalho
+    caminho_imagem = os.path.join(settings.BASE_DIR, "juridico", "static", "juridico", "img", "logo_fund_transp _02.png")
+
+    # Adicionando a imagem no topo
+    if os.path.exists(caminho_imagem):
+        imagem = ImageReader(caminho_imagem)
+        pdf.drawImage(imagem, 50, altura - 100, width=100, height=50, preserveAspectRatio=True)
+
+    # Título do documento abaixo da imagem
+    pdf.setFont("Helvetica-Bold", 14)
+    pdf.drawString(200, altura - 80, f"Relatório do Processo {processo.numero_processo}")
+
+    # Definição do ponto inicial para os dados
+    y = altura - 150  # Primeira linha dos dados
+    espacamento_vertical = 40  # Espaçamento entre as linhas
+    espacamento_horizontal = 250  # Espaçamento entre as colunas
+
+    # Organização dos dados para exibição
+    dados = [
+        ("Número do Processo", processo.numero_processo),
+        ("Tipo", processo.tipo_processo),
+        ("Autor", processo.nome_autor),
+        ("Status", processo.status),
+        ("Unidade", processo.unidade),
+        ("Data de Propositura", processo.data_propositura.strftime('%d/%m/%Y')),
+        ("Advogado", processo.advogado.nome_completo),
+        ("Juiz", processo.juiz)
+    ]
+
+    # Ajustando para exibição em duas colunas
+    for i in range(0, len(dados), 2):
+        # Primeira coluna
+        pdf.setFont("Helvetica-Bold", 12)
+        pdf.drawString(50, y, dados[i][0])  # Nome do campo (negrito)
+        pdf.setFont("Helvetica", 12)
+        pdf.drawString(50, y - 15, str(dados[i][1]))  # Valor do campo
+
+        # Segunda coluna (se existir)
+        if i + 1 < len(dados):
+            pdf.setFont("Helvetica-Bold", 12)
+            pdf.drawString(50 + espacamento_horizontal, y, dados[i + 1][0])  # Nome do campo (negrito)
+            pdf.setFont("Helvetica", 12)
+            pdf.drawString(50 + espacamento_horizontal, y - 15, str(dados[i + 1][1]))  # Valor do campo
+
+        # Descer para a próxima linha
+        y -= espacamento_vertical
+
+    # Adicionando o campo "Descrição" centralizado
+    y -= 20  # Espaçamento extra antes da descrição
+    pdf.setFont("Helvetica-Bold", 12)
+    pdf.drawCentredString(largura / 2, y, "Descrição")  # Nome do campo centralizado
+    y -= 15  # Espaço antes do valor
+
+    pdf.setFont("Helvetica", 12)
+    pdf.drawCentredString(largura / 2, y, processo.descricao)  # Valor da descrição centralizado
+
+    # Finaliza o PDF
+    pdf.save()
+    buffer.seek(0)
+
+    # Retorna o PDF como resposta
+    response = HttpResponse(buffer, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="Processo_{numero_processo}.pdf"'
+
+    return response
 
 def editar_processo(request):
     if request.method == "POST":
@@ -201,13 +268,3 @@ def deletar_advogado(request, id):
     advogado = get_object_or_404(Advogado, id=id)
     advogado.delete()
     return redirect('home')
-
-@login_required
-def registros(request):
-    return render(request,'juridico/registros.html')
-
-
-# ==== Função para deslogar do sistema =====
-def logout_usuario(request):
-    logout(request)
-    return redirect('login')

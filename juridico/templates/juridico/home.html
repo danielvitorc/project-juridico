@@ -13,16 +13,21 @@
 </head>
 <body>
 
-    {% include 'juridico/includes/sidebar.html' with exibir_botoes_modais=True %}
+    {% include 'juridico/includes/sidebar.html' with exibir_botoes_modais=True botao_reuniao=False %}
     {% include 'juridico/includes/modal_processo.html' %}
     {% include 'juridico/includes/modal_advogado.html' %}
     {% include 'juridico/includes/modal_upload_excel.html' %}
     {% include 'juridico/includes/modal_upload_excel.html' %}
     {% include 'juridico/includes/modal_edicao_processo.html' %}
     {% include 'juridico/includes/modal_detalhes_processo.html' %}
+    {% include 'juridico/includes/modal_pdf.html' %}
 
     <div class="content">
-        <a href="{% url 'exportar_processos_excel' %}" class="btn btn-success">Excel</a> 
+        <a href="{% url 'exportar_processos_excel' %}" class="btn btn-success">Excel</a>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#processoModal">
+            Baixar PDF
+        </button>
+
 
         <!-- Filtros -->
         <form id="filter-form" data-url="{% url 'home' %}" method="get" class="mb-4 p-3 bg-white rounded shadow-sm">
@@ -72,6 +77,18 @@
                 document.querySelector('.sidebar').classList.add('show');
             }, 100); // Pequeno atraso para garantir que a transição seja visível
         });
+    </script>
+    <script>
+        function baixarPDF() {
+            let numero_processo = document.getElementById("numero_processo").value;
+            if (numero_processo.trim() === "") {
+                alert("Digite um número de processo válido!");
+                return;
+            }
+
+            // Redireciona para a rota do Django para gerar o PDF
+            window.location.href = `/exportar-pdf/${numero_processo}/`;
+        }
     </script>
 </html>
 </body>

@@ -1,0 +1,22 @@
+    <!-- Modal para Detalhes do Evento -->
+    <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Detalhes da Reunião</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Data:</strong> <span id="modalDate"></span></p>
+                    <p><strong>Hora:</strong> <span id="modalTime"></span></p>
+                    <p><strong>Autor:</strong> <span id="modalAutor"></span></p>
+                    <p><strong>Processo:</strong> <span id="modalProcesso"></span></p>
+                    <p><strong>Descrição:</strong></p>
+                    <p id="modalDescription"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>

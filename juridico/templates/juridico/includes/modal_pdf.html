@@ -1,0 +1,18 @@
+<div class="modal fade" id="processoModal" tabindex="-1" aria-labelledby="processoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="processoModalLabel">Baixar Processo em PDF</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <label for="numero_processo" class="form-label">Digite o Número do Processo:</label>
+                <input type="text" id="numero_processo" class="form-control" >
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="baixarPDF()">Baixar PDF</button>
+            </div>
+        </div>
+    </div>
+</div>

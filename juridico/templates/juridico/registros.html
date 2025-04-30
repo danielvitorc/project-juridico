@@ -8,14 +8,21 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="{% static 'juridico/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'juridico/css/home.css' %}">
 
 </head>
 <body>
         <!-- Sidebar -->
-        {% include 'juridico/includes/sidebar.html' with exibir_botoes_modais=False %}
-
+        {% include 'juridico/includes/sidebar.html'%}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</html>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(function() {
+                document.querySelector('.sidebar').classList.add('show');
+            }, 100); // Pequeno atraso para garantir que a transição seja visível
+        });
+</script>
+
 </body>
 </html>

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Processo, Advogado
+from .models import Processo, Advogado, Reuniao
 
 class AdvogadoForm(forms.ModelForm):
     class Meta:
@@ -127,3 +127,26 @@ class ProcessoFilterForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         pass
+
+
+class ReuniaoForm(forms.ModelForm):
+    class Meta:
+        model = Reuniao
+        fields = ['autor', 'processo', 'data', 'hora', 'descricao']
+        widgets = {
+            'data': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'hora': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'}),
+            'descricao': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(ReuniaoForm, self).__init__(*args, **kwargs)
+        
+        self.fields['autor'].queryset = Processo.objects.all()
+        self.fields['autor'].label_from_instance = lambda obj: obj.nome_autor  # Mostra apenas o nome do autor
+
+        self.fields['processo'].queryset = Processo.objects.all()
+        self.fields['processo'].label_from_instance = lambda obj: f"{obj.numero_processo} - {obj.tipo_processo}"
+
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'class': 'form-control'})
