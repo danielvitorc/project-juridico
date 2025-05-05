@@ -1,10 +1,33 @@
+{% load static %}
 <div class="sidebar">
-    <h4 class="text-center">Norte Tech</h4>
-    <a href="{% url 'home' %}" class="botao-active"><i class="fa fa-home me-2"></i> HOME</a>
-    <a href="{% url 'reunioes' %}"class="botao-sidebar"><i class="fas fa-users me-2"></i> REUNIÕES</a>
-    <a href="{% url 'registros' %}"class="botao-sidebar"><i class="fas fa-list me-2"></i> REGISTROS</a>
-    <a href="#"class="botao-sidebar"><i class="fas fa-chart-line me-2"></i> ANÁLITICO</a>
-    <a href="{% url 'logout' %}" class="botao-sidebar"><i class="fas fa-sign-out-alt me-2"></i> LOGOUT</a>
+    <img src="{% static 'juridico/img/login_logo.png' %}" 
+    alt="Logo" style="margin-left: 54px; height: 40px; margin-right: 10px; margin-bottom: 15px;">
+    <h4 class="text-center">JURÍDICO</h4>
+
+    <a href="{% url 'home' %}" 
+       class="botao-sidebar {% if request.resolver_match.url_name == 'home' %}botao-active{% endif %}">
+       <i class="fa fa-home me-2"></i> HOME
+    </a>
+
+    <a href="{% url 'reunioes' %}" 
+       class="botao-sidebar {% if request.resolver_match.url_name == 'reunioes' %}botao-active{% endif %}">
+       <i class="fas fa-users me-2"></i> REUNIÕES
+    </a>
+
+    <a href="{% url 'registros' %}" 
+       class="botao-sidebar {% if request.resolver_match.url_name == 'registros' %}botao-active{% endif %}">
+       <i class="fas fa-list me-2"></i> REGISTROS
+    </a>
+
+    <a href="{% url 'analitico' %}" 
+       class="botao-sidebar {% if request.resolver_match.url_name == 'analitico' %}botao-active{% endif %}">
+       <i class="fas fa-desktop me-2"></i> ANALÍTICO
+    </a>
+
+    <a href="{% url 'logout' %}" 
+       class="botao-sidebar {% if request.resolver_match.url_name == 'logout' %}botao-active{% endif %}">
+       <i class="fas fa-sign-out-alt me-2"></i> LOGOUT
+    </a>
 
     {% if exibir_botoes_modais %}
         <button type="button" class="btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target="#formModal">
@@ -17,11 +40,11 @@
             <i class="fas fa-file-upload me-2"></i> UPLOAD PROCESSOS
         </button>
     {% endif %}
-    
+
     {% if botao_reuniao %}
         <button type="button" class="btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target="#formModalReuniao">
-            <i class="fas fa-plus me-2"></i>REUNIÃO
+            <i class="fas fa-plus me-2"></i> REUNIÃO
         </button>
     {% endif %}
-
 </div>
+

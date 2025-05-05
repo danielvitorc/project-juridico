@@ -5,7 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>{% block title %}HOME - JURÍDICO{% endblock %}</title>
+    <link rel="icon" href="https://encrypted-tbn2.gstatic.com/faviconV2?url=https://www.nortetech.net&amp;client=VFE&amp;size=64&amp;type=FAVICON&amp;fallback_opts=TYPE,SIZE,URL&amp;nfrp=2" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="{% static 'juridico/css/home.css' %}">
@@ -23,49 +24,54 @@
     {% include 'juridico/includes/modal_pdf.html' %}
 
     <div class="content">
+        <h3 class="mb-4">ENCONTRE O PROCESSO QUE VOCÊ PROCURA</h3>
         <a href="{% url 'exportar_processos_excel' %}" class="btn btn-success">Excel</a>
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#processoModal">
             Baixar PDF
         </button>
 
+        <div class="card-home shadow-lg p-4">
+            <div class="card-body">
 
-        <!-- Filtros -->
-        <form id="filter-form" data-url="{% url 'home' %}" method="get" class="mb-4 p-3 bg-white rounded shadow-sm">
-            <div class="row g-3">
+                <!-- Filtros -->
+                <form id="filter-form" data-url="{% url 'home' %}" method="get" class="mb-4 p-3 rounded shadow-sm">
+                    <div class="row g-3">
 
-                <!-- Coluna 1 -->
-                <div class="col-md-3">
-                    <label class="form-label">{{ filter_form.numero_processo.label }}</label>
-                    {{ filter_form.numero_processo|add_class:"form-control" }}
+                        <!-- Coluna 1 -->
+                        <div class="col-md-3">
+                            <label class="form-label">{{ filter_form.numero_processo.label }}</label>
+                            {{ filter_form.numero_processo|add_class:"form-control" }}
 
-                    <label class="form-label mt-3">{{ filter_form.status.label }}</label>
-                    {{ filter_form.status|add_class:"form-select" }}
+                            <label class="form-label mt-3">{{ filter_form.status.label }}</label>
+                            {{ filter_form.status|add_class:"form-select" }}
 
-                    <label class="form-label mt-3">{{ filter_form.instancia.label }}</label>
-                    {{ filter_form.instancia|add_class:"form-select" }}
+                            <label class="form-label mt-3">{{ filter_form.instancia.label }}</label>
+                            {{ filter_form.instancia|add_class:"form-select" }}
 
-                    
-                </div>
+                            
+                        </div>
 
-                <!-- Coluna 2 -->
-                <div class="col-md-3">
-                    <label class="form-label">{{ filter_form.advogado.label }}</label>
-                    {{ filter_form.advogado|add_class:"form-select" }}
+                        <!-- Coluna 2 -->
+                        <div class="col-md-3">
+                            <label class="form-label">{{ filter_form.advogado.label }}</label>
+                            {{ filter_form.advogado|add_class:"form-select" }}
 
-                    <label class="form-label mt-3">{{ filter_form.nome_autor.label }}</label>
-                    {{ filter_form.nome_autor|add_class:"form-select" }}
+                            <label class="form-label mt-3">{{ filter_form.nome_autor.label }}</label>
+                            {{ filter_form.nome_autor|add_class:"form-select" }}
 
-                    <!-- Botão Limpar Filtros -->
-                    <div class="mt-4">
-                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">
-                            <i class="fas fa-times me-2"></i> Limpar Filtros
-                        </a>
-                    </div>
-                </div>
-                                <!-- Tabela -->
-                <div id="processo-tabela">
-                    {% include 'juridico/partials/processo_tabela.html' %}
-                </div>
+                            <!-- Botão Limpar Filtros -->
+                            <div class="mt-4">
+                                <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-times me-2"></i> Limpar Filtros
+                                </a>
+                            </div>
+                        </div>
+                                        <!-- Tabela -->
+                        <div id="processo-tabela">
+                            {% include 'juridico/partials/processo_tabela.html' %}
+                        </div>
+            </div>
+        </div>
     </div>
     <script src="{% static 'juridico/js/filters.js' %}"></script>
     <script src="{% static 'juridico/js/home.js' %}"></script>

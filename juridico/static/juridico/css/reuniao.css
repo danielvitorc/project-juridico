@@ -3,14 +3,12 @@ body {
   background-color: #00122a;
 }
 
-
-
 .content {
-    margin-left: 17vw;
-    padding: 20px;
+  margin-left: 17vw;
+  padding: 20px;
 }
 
-.card-home.shadow-lg.p-4 {
+.card-reuniao.shadow-lg.p-4 {
   color: #ffd900;
   background: linear-gradient(90deg, #232423 0%, #232423 35%) !important;
   margin-top: 20px;
@@ -25,8 +23,8 @@ body {
 
 }
 
+
 .sidebar {
-    color: #ffd900;
     background: #0E2C53;
       width: 25vw;
       height: 95vh;

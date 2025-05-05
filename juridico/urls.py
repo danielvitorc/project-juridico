@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import auth, home, registers, meet
+from .views import auth, home, registers, meet, analitico
 
 urlpatterns = [
     path('', auth.login_usuario, name='login'),
@@ -15,4 +15,5 @@ urlpatterns = [
     path('reunioes/', meet.reunioes, name='reunioes'),
     path('api/reunioes/', meet.api_reunioes, name='api_reunioes'),
     path("get-processos/", meet.get_processos_por_autor, name="get_processos_por_autor"), 
+    path('analitico/', analitico.analitico, name='analitico'),
 ]
