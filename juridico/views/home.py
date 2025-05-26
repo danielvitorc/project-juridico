@@ -60,6 +60,13 @@ def home(request):
             try:
                 df = pd.read_excel(excel_file)
                 for _, row in df.iterrows():
+                    try:
+                        advogado_obj = Advogado.objects.get(
+                            nome_completo__iexact=row['advogado'].strip()
+                        )
+                    except Advogado.DoesNotExist:
+                        advogado_obj = None  # advogado não encontrado
+                    
                     Processo.objects.create(
                         unidade=row['unidade'],
                         tipo_processo=row['tipo_processo'],
@@ -71,7 +78,7 @@ def home(request):
                         fase=row['fase'],
                         instancia=row['instancia'],
                         data_propositura=row['data_propositura'],
-                        advogado=row['advogado'],
+                        advogado_nome=row['advogado'],  
                         status=row['status'],
                         nome_autor=row['nome_autor'],
                         cpf_autor=row['cpf_autor'],

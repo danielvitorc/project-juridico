@@ -14,6 +14,8 @@ detailsModal.addEventListener('show.bs.modal', function (event) {
     var instancia = button.getAttribute('data-instancia');
     var dataPropositura = button.getAttribute('data-data_propositura');
     var advogado = button.getAttribute('data-advogado');
+    var advogado_nome = button.getAttribute('data-advogado_nome');
+    var nomeAdvogado = advogado && advogado.trim() !== '' ? advogado : advogado_nome;
     var status = button.getAttribute('data-status');
     var nomeAutor = button.getAttribute('data-nome_autor');
     var cpfAutor = button.getAttribute('data-cpf_autor');
@@ -32,7 +34,7 @@ detailsModal.addEventListener('show.bs.modal', function (event) {
     detailsModal.querySelector('#modal-fase').textContent = fase;
     detailsModal.querySelector('#modal-instancia').textContent = instancia;
     detailsModal.querySelector('#modal-data_propositura').textContent = dataPropositura;
-    detailsModal.querySelector('#modal-advogado').textContent = advogado;
+    detailsModal.querySelector('#modal-advogado').textContent = nomeAdvogado;
     detailsModal.querySelector('#modal-status').textContent = status;
     detailsModal.querySelector('#modal-nome_autor').textContent = nomeAutor;
     detailsModal.querySelector('#modal-cpf_autor').textContent = cpfAutor;

@@ -19,7 +19,8 @@ class Processo(models.Model):
     fase = models.CharField(max_length=50)
     instancia = models.CharField(max_length=50)
     data_propositura = models.DateField()
-    advogado = models.ForeignKey(Advogado, on_delete=models.CASCADE)
+    advogado = models.ForeignKey(Advogado, on_delete=models.SET_NULL, null=True, blank=True)
+    advogado_nome = models.CharField(max_length=255, blank=True)  # novo campo para nome "avulso"
     status = models.CharField(max_length=50)
     nome_autor = models.CharField(max_length=50, unique=True)
     cpf_autor = models.CharField(max_length=14)

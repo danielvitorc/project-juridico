@@ -14,7 +14,13 @@
             <tr>
                 <td>{{ processo.numero_processo }}</td>
                 <td>{{ processo.tipo_processo }}</td>
-                <td>{{ processo.advogado.nome_completo }}</td>
+                <td>
+                    {% if processo.advogado %}
+                        {{ processo.advogado.nome_completo }}
+                    {% else %}
+                        {{ processo.advogado_nome }}
+                    {% endif %}
+                </td>
                 <td>{{ processo.status }}</td>
                 <td>
                     <button type="button" class="btn btn-info btn-sm view-details" data-bs-toggle="modal" data-bs-target="#detailsModal"
@@ -28,7 +34,8 @@
                     data-fase="{{ processo.fase }}"
                     data-instancia="{{ processo.instancia }}"
                     data-data_propositura="{{ processo.data_propositura|date:'d/m/Y' }}"
-                    data-advogado="{{ processo.advogado.nome_completo|default:'-' }}"
+                    data-advogado="{{ processo.advogado.nome_completo|default_if_none:'' }}"
+                    data-advogado_nome="{{ processo.advogado_nome|default:'-' }}" 
                     data-status="{{ processo.status }}"
                     data-nome_autor="{{ processo.nome_autor }}"
                     data-cpf_autor="{{ processo.cpf_autor }}"
